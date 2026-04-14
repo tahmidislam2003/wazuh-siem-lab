@@ -7,12 +7,20 @@ Open-source SIEM with Windows and Linux agents, three MITRE ATT&CK attack simula
 ## Architecture
 
 ```mermaid
-graph TD
-    A[Wazuh Manager + Indexer + Dashboard<br/>VM 101 — 10.0.0.10] -->|collects alerts| B[Wazuh Dashboard<br/>Web UI]
-    C[Windows 11 Agent<br/>VM 103 — 10.0.0.20<br/>Sysmon v15.15] -->|encrypted agent traffic| A
-    D[Linux Agent<br/>VM 102 — 10.0.0.30] -->|encrypted agent traffic| A
-    E[OPNsense Firewall<br/>10.0.0.1] -->|routes lab traffic| C
-    E -->|routes lab traffic| D
+graph LR
+    WIN[Windows 11 Agent<br/>VM 103 — 10.0.0.20<br/>+ Sysmon v15.15]
+    LIN[Linux Agent<br/>VM 102 — 10.0.0.30]
+
+    subgraph server["Wazuh Server — VM 101 (10.0.0.10)"]
+        MGR[Wazuh Manager<br/>rule engine + correlation]
+        IDX[Wazuh Indexer<br/>log storage]
+        DASH[Wazuh Dashboard<br/>web UI]
+        MGR -->|stores events| IDX
+        IDX -->|serves data| DASH
+    end
+
+    WIN -->|"TCP 1514 — encrypted agent traffic"| MGR
+    LIN -->|"TCP 1514 — encrypted agent traffic"| MGR
 ```
 
 ---
