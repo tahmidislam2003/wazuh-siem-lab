@@ -19,8 +19,8 @@ graph LR
         IDX -->|serves data| DASH
     end
 
-    WIN -->|"TCP 1514 - encrypted agent traffic"| MGR
-    LIN -->|"TCP 1514 - encrypted agent traffic"| MGR
+    WIN -->|TCP 1514 — encrypted| MGR
+    LIN -->|TCP 1514 — encrypted| MGR
 ```
 
 ---
